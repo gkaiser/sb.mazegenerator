@@ -8,8 +8,7 @@ namespace SB.MazeGenerator
 {
   public class Cell
   {
-    public const int HEIGHT = 60;
-    public const int WIDTH = 60;
+    public const int SIZE = 60;
     public int X;
     public int Y;
 
