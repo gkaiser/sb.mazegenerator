@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace SB.MazeGenerator
@@ -43,9 +38,22 @@ namespace SB.MazeGenerator
       var gfx = e.Graphics;
 
       this.Scene.Draw(gfx);
-      this.Scene.Update();
+
+      if (this.Scene.Maze.Cells.Any(c => !c.WasVisited))
+        this.Scene.Update();
 
       if (!this.DoubleBuffered) { gfx.Dispose(); }
+    }
+
+    private void FrmMain_MouseDown(object sender, MouseEventArgs e)
+    {
+      if (e.Button == MouseButtons.Left)
+      {
+        Win32.ReleaseCapture();
+        Win32.SendMessage(this.Handle, Win32.WM_NCLBUTTONDOWN, Win32.HT_CAPTION, 0);
+      }
+      if (e.Button == MouseButtons.Right)
+        this.Close();
     }
 
   }
