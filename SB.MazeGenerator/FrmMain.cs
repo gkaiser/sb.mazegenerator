@@ -38,6 +38,7 @@ namespace SB.MazeGenerator
       var gfx = e.Graphics;
 
       this.Scene.Draw(gfx);
+      this.Scene.Update();
 
       if (!this.DoubleBuffered) { gfx.Dispose(); }
 
@@ -46,21 +47,18 @@ namespace SB.MazeGenerator
         this.RedrawTimer.Stop();
 
         MessageBox.Show("Maze finished!");
-
-        return;
       }
-
-      this.Scene.Update();
     }
 
     private void FrmMain_MouseDown(object sender, MouseEventArgs e)
     {
-      if (e.Button == MouseButtons.Left)
+      if (e.Button == MouseButtons.Left && e.Clicks == 1)
       {
-        Win32.ReleaseCapture();
-        Win32.SendMessage(this.Handle, Win32.WM_NCLBUTTONDOWN, Win32.HT_CAPTION, 0);
+        this.RedrawTimer.Stop();
+        //Win32.ReleaseCapture();
+        //Win32.SendMessage(this.Handle, Win32.WM_NCLBUTTONDOWN, Win32.HT_CAPTION, 0);
       }
-      if (e.Button == MouseButtons.Right)
+      else if (e.Button == MouseButtons.Left && e.Clicks == 2)
         this.Close();
     }
 

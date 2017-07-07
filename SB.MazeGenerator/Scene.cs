@@ -10,12 +10,12 @@ namespace SB.MazeGenerator
 {
   public class Scene
   {
-    public const decimal FRAMES_PER_SEC = 15m;
+    public const decimal FRAMES_PER_SEC = 5m;
     public const int WIDTH = 600;
     public const int HEIGHT = 600;
 
     public Maze Maze;
-    public Random RandGen = new Random((int)DateTime.Now.Subtract(DateTime.Today).TotalSeconds);
+    public Random RandGen = new Random();
 
     public Scene()
     {
@@ -28,7 +28,9 @@ namespace SB.MazeGenerator
 
       foreach (var c in this.Maze.Cells)
       {
-        if (c.WasVisited)
+        if (c == this.Maze.CurrentCell)
+          gfx.FillRectangle(Brushes.White, c.X, c.Y, Cell.SIZE, Cell.SIZE);
+        else if (c.WasVisited)
           gfx.FillRectangle(Brushes.Purple, c.X, c.Y, Cell.SIZE, Cell.SIZE);
 
         if (c.IsTopWalled)
@@ -40,21 +42,26 @@ namespace SB.MazeGenerator
         if (c.IsRightWalled)
           gfx.DrawLine(Pens.White, c.X + Cell.SIZE, c.Y, c.X + Cell.SIZE, c.Y + Cell.SIZE);
       }
-
     }
 
     public void Update()
     {
       var nbors = this.Maze.GetUnvisitedNeighbors(this.Maze.CurrentCell);
       if (nbors.Count == 0)
+      {
+        // backtracking
         return;
+      }
 
-      var idx = this.RandGen.Next(0, nbors.Count - 1);
-      Console.WriteLine($"0 <==> {idx} <==> {nbors.Count - 1}");
-
+      var idx = this.RandGen.Next(0, nbors.Count);
       var next = nbors[idx];
 
       next.WasVisited = true;
+
+      this.Maze.HistoryStack.Push(this.Maze.CurrentCell);
+
+      Cell.RemoveWalls(this.Maze.CurrentCell, next);
+
       this.Maze.CurrentCell = next;
     }
 

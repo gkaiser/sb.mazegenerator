@@ -10,10 +10,12 @@ namespace SB.MazeGenerator
   {
     public List<Cell> Cells;
     public Cell CurrentCell;
-    private Stack<Cell> CellStack;
+    public Stack<Cell> HistoryStack;
 
-    public Maze(int horizCells, int vertCells)
+
+    public Maze(int horizCells, int vertCells, Stack<Cell> historyStack)
     {
+      HistoryStack = historyStack;
       this.Cells = new List<Cell>();
 
       for (int i = 0; i < horizCells; i++)
@@ -27,7 +29,7 @@ namespace SB.MazeGenerator
       this.CurrentCell = this.Cells[0];
       this.CurrentCell.WasVisited = true;
 
-      this.CellStack = new Stack<Cell>();
+      this.HistoryStack = new Stack<Cell>();
     }
 
     public void BeginGeneration()
@@ -41,24 +43,24 @@ namespace SB.MazeGenerator
 
     public List<Cell> GetUnvisitedNeighbors(Cell c)
     {
-      var n1Top = new[] { c.X, c.Y - Cell.SIZE };
-      var n2Right = new[] { c.X + Cell.SIZE, c.Y };
-      var n3Bott = new[] { c.X, c.Y + Cell.SIZE };
-      var n4Left = new[] { c.X - Cell.SIZE, c.Y };
+      var nTop = new[] { c.X, c.Y - Cell.SIZE };
+      var nRight = new[] { c.X + Cell.SIZE, c.Y };
+      var nBott = new[] { c.X, c.Y + Cell.SIZE };
+      var nLeft = new[] { c.X - Cell.SIZE, c.Y };
 
       var neighbors = new List<Cell>();
 
-      if (n1Top[0] >= 0 && n1Top[0] < Scene.WIDTH && n1Top[1] >= 0 && n1Top[1] < Scene.HEIGHT)
-        neighbors.AddRange(this.Cells.Where(n => !n.WasVisited && n.X == n1Top[0] && n.Y == n1Top[1]));
+      if (nTop[0] >= 0 && nTop[0] < Scene.WIDTH && nTop[1] >= 0 && nTop[1] < Scene.HEIGHT)
+        neighbors.AddRange(this.Cells.Where(n => !n.WasVisited && n.X == nTop[0] && n.Y == nTop[1]));
 
-      if (n2Right[0] >= 0 && n2Right[0] < Scene.WIDTH && n2Right[1] >= 0 && n2Right[1] < Scene.HEIGHT)
-        neighbors.AddRange(this.Cells.Where(n => !n.WasVisited && n.X == n2Right[0] && n.Y == n2Right[1]));
+      if (nRight[0] >= 0 && nRight[0] < Scene.WIDTH && nRight[1] >= 0 && nRight[1] < Scene.HEIGHT)
+        neighbors.AddRange(this.Cells.Where(n => !n.WasVisited && n.X == nRight[0] && n.Y == nRight[1]));
 
-      if (n3Bott[0] >= 0 && n3Bott[0] < Scene.WIDTH && n3Bott[1] >= 0 && n3Bott[1] < Scene.HEIGHT)
-        neighbors.AddRange(this.Cells.Where(n => !n.WasVisited && n.X == n3Bott[0] && n.Y == n3Bott[1]));
+      if (nBott[0] >= 0 && nBott[0] < Scene.WIDTH && nBott[1] >= 0 && nBott[1] < Scene.HEIGHT)
+        neighbors.AddRange(this.Cells.Where(n => !n.WasVisited && n.X == nBott[0] && n.Y == nBott[1]));
 
-      if (n4Left[0] >= 0 && n4Left[0] < Scene.WIDTH && n4Left[1] >= 0 && n4Left[1] < Scene.HEIGHT)
-        neighbors.AddRange(this.Cells.Where(n => !n.WasVisited && n.X == n4Left[0] && n.Y == n4Left[1]));
+      if (nLeft[0] >= 0 && nLeft[0] < Scene.WIDTH && nLeft[1] >= 0 && nLeft[1] < Scene.HEIGHT)
+        neighbors.AddRange(this.Cells.Where(n => !n.WasVisited && n.X == nLeft[0] && n.Y == nLeft[1]));
 
       return neighbors;
     }
