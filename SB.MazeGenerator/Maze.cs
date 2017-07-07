@@ -13,9 +13,8 @@ namespace SB.MazeGenerator
     public Stack<Cell> HistoryStack;
 
 
-    public Maze(int horizCells, int vertCells, Stack<Cell> historyStack)
+    public Maze(int horizCells, int vertCells)
     {
-      HistoryStack = historyStack;
       this.Cells = new List<Cell>();
 
       for (int i = 0; i < horizCells; i++)

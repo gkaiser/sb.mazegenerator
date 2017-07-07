@@ -10,7 +10,7 @@ namespace SB.MazeGenerator
 {
   public class Scene
   {
-    public const decimal FRAMES_PER_SEC = 5m;
+    public const decimal FRAMES_PER_SEC = 60m;
     public const int WIDTH = 600;
     public const int HEIGHT = 600;
 
@@ -49,7 +49,11 @@ namespace SB.MazeGenerator
       var nbors = this.Maze.GetUnvisitedNeighbors(this.Maze.CurrentCell);
       if (nbors.Count == 0)
       {
-        // backtracking
+        if (!this.Maze.UnvisitedCellsExist || this.Maze.HistoryStack.Count == 0)
+          return;
+
+        this.Maze.CurrentCell = this.Maze.HistoryStack.Pop();
+
         return;
       }
 
