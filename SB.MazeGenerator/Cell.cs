@@ -20,30 +20,30 @@ namespace SB.MazeGenerator
       this.Y = y;
     }
 
-    public static void RemoveWalls(Cell c1, Cell c2)
+    public void RemoveWallWithNeighbor(Cell n)
     {
-      var xDiff = c1.X - c2.X;
+      var xDiff = this.X - n.X;
       if (xDiff > 0)
       {
-        c1.IsLeftWalled = false;
-        c2.IsRightWalled = false;
+        this.IsLeftWalled = false;
+        n.IsRightWalled = false;
       }
       else if (xDiff < 0)
       {
-        c1.IsRightWalled = false;
-        c2.IsLeftWalled = false;
+        this.IsRightWalled = false;
+        n.IsLeftWalled = false;
       }
 
-      var yDiff = c1.Y - c2.Y;
+      var yDiff = this.Y - n.Y;
       if (yDiff > 0)
       {
-        c1.IsTopWalled = false;
-        c2.IsBottomWalled = false;
+        this.IsTopWalled = false;
+        n.IsBottomWalled = false;
       }
       else if (yDiff < 0)
       {
-        c1.IsBottomWalled = false;
-        c2.IsTopWalled = false;
+        this.IsBottomWalled = false;
+        n.IsTopWalled = false;
       }
     }
 

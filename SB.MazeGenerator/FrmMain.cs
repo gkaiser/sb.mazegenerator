@@ -43,11 +43,7 @@ namespace SB.MazeGenerator
       if (!this.DoubleBuffered) { gfx.Dispose(); }
 
       if (!this.Scene.Maze.UnvisitedCellsExist && this.RedrawTimer.Enabled)
-      {
         this.RedrawTimer.Stop();
-
-        MessageBox.Show("Maze finished!");
-      }
     }
 
     private void FrmMain_MouseDown(object sender, MouseEventArgs e)

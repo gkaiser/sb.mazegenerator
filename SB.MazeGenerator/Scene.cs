@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Drawing;
 
 namespace SB.MazeGenerator
 {
@@ -19,7 +15,9 @@ namespace SB.MazeGenerator
 
     public Scene()
     {
-      this.Maze = new Maze(Scene.WIDTH / Cell.SIZE, Scene.HEIGHT / Cell.SIZE);
+      this.Maze = new Maze(
+        Scene.WIDTH / Cell.SIZE, 
+        Scene.HEIGHT / Cell.SIZE);
     }
 
     public void Draw(Graphics gfx)
@@ -49,10 +47,8 @@ namespace SB.MazeGenerator
       var nbors = this.Maze.GetUnvisitedNeighbors(this.Maze.CurrentCell);
       if (nbors.Count == 0)
       {
-        if (!this.Maze.UnvisitedCellsExist || this.Maze.HistoryStack.Count == 0)
-          return;
-
-        this.Maze.CurrentCell = this.Maze.HistoryStack.Pop();
+        if (this.Maze.UnvisitedCellsExist && this.Maze.HistoryStack.Count != 0)
+          this.Maze.CurrentCell = this.Maze.HistoryStack.Pop();
 
         return;
       }
@@ -63,9 +59,7 @@ namespace SB.MazeGenerator
       next.WasVisited = true;
 
       this.Maze.HistoryStack.Push(this.Maze.CurrentCell);
-
-      Cell.RemoveWalls(this.Maze.CurrentCell, next);
-
+      this.Maze.CurrentCell.RemoveWallWithNeighbor(next);
       this.Maze.CurrentCell = next;
     }
 
